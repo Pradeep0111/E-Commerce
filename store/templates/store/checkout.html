@@ -71,9 +71,11 @@
         </div>
     </div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AXWo1JotYxZf447Jdt-dzdeqTPNOZ_xupCoaMbUQBWMQrd8135nVNOKficUSbmJrAZWz1TTiDayjOC6h&currency=USD"></script>
 
     <script>
+
+        var total = '{{order.get_cart_total}}*0.012'
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
 
@@ -88,7 +90,7 @@
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '88.44'
+                            value: parseFloat(total*0.012).toFixed(2)
                         }
                     }]
                 });
@@ -101,7 +103,7 @@
                     console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                     var transaction = orderData.purchase_units[0].payments.captures[0];
                     alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
-
+                    submitFormData()
                     // Replace the above to show a success message within this page, e.g.
                     // const element = document.getElementById('paypal-button-container');
                     // element.innerHTML = '';
@@ -112,6 +114,7 @@
 
 
         }).render('#paypal-button-container');
+        
     </script>
     <script type="text/javascript">
         var shipping = '{{order.shipping}}'
@@ -141,6 +144,8 @@
             document.getElementById('form-button').classList.add('hidden')
             document.getElementById('payment-info').classList.remove('hidden')
         })
+
+
         
         function submitFormData(){
             console.log('Payment button clicked')
